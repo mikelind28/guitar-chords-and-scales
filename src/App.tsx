@@ -1,27 +1,30 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { NOTE_SEQUENCE, SHARP_TO_FLAT_MAP } from "./guitar";
-import SharpFlatToggle from "./Components/SharpFlatToggle";
-import BaseNoteSequence from "./Components/BaseNoteSequence";
-import ChordScaleSelection from "./Components/ChordScaleSelection";
-import ViewSize from "./Components/ViewSize";
 import Fretboard from "./Components/Fretboard";
 import type { FlatNote, SharpNote, Note, ChordOptionsType } from "./types";
+import Options from "./Components/Options";
 // import Piano from './Components/Piano';
 
 function App() {
+  const [optionsOpen, setOptionsOpen] = useState(true);
+
   // when hovering over a note, every identical note on the fretboard is highlighted.
   const [hoveredNote, setHoveredNote] = useState<Note | undefined>(undefined);
 
   // choose whether to display notes as sharps or flats.
-  const [sharpsOrFlats, setSharpsOrFlats] = useState<"sharps" | "flats">(
-    "sharps",
-  );
+  const [sharpsOrFlats, setSharpsOrFlats] = useState<"sharps" | "flats">("sharps");
 
   // the selectedBaseNote will determine which chord is highlighted on the fretboard.
-  const [selectedBaseNote, setSelectedBaseNote] = useState<
-    SharpNote | FlatNote
-  >("E");
+  const [selectedBaseNote, setSelectedBaseNote] = useState<SharpNote | FlatNote>("E");
+
+  const [currentChord, setCurrentChord] = useState<ChordOptionsType>("major-chord");
+
+  const [currentChordNotes, setCurrentChordNotes] = useState<
+    (SharpNote | FlatNote)[]
+  >(["E", "G#", "B"]);
+
+  const [viewSize, setViewSize] = useState(1);
 
   const majorChord: number[] = [4, 7];
   const minorChord: number[] = [3, 7];
@@ -32,15 +35,6 @@ function App() {
   const naturalMinorScale: number[] = [0, 2, 3, 5, 7, 8, 10];
   const harmonicMinorScale: number[] = [0, 2, 3, 5, 7, 8, 11];
   const bluesScale: number[] = [0, 3, 5, 6, 7, 10];
-
-  const [currentChord, setCurrentChord] =
-    useState<ChordOptionsType>("major-chord");
-
-  const [currentChordNotes, setCurrentChordNotes] = useState<
-    (SharpNote | FlatNote)[]
-  >(["E", "G#", "B"]);
-
-  const [viewSize, setViewSize] = useState(1);
 
   function makeChordWithSharps(baseNote: SharpNote, currentChord: number[]) {
     // initialize the chord array that will be returned.
@@ -150,24 +144,18 @@ function App() {
   }, [sharpsOrFlats, selectedBaseNote, currentChord]);
 
   return (
-    <>
-      <div className="my-4 w-full flex flex-col gap-4 items-center">
-        <SharpFlatToggle
-          sharpsOrFlats={sharpsOrFlats}
-          setSharpsOrFlats={setSharpsOrFlats}
-        />
-
-        <BaseNoteSequence
-          selectedBaseNote={selectedBaseNote}
-          setSelectedBaseNote={setSelectedBaseNote}
-          sharpsOrFlats={sharpsOrFlats}
-        />
-
-        <div className="flex w-xl justify-between gap-20">
-          <ChordScaleSelection setCurrentChord={setCurrentChord} />
-          <ViewSize viewSize={viewSize} setViewSize={setViewSize} />
-        </div>
-      </div>
+    <main className="p-2 flex flex-col gap-4">
+      <Options 
+        setOptionsOpen={setOptionsOpen} 
+        optionsOpen={optionsOpen} 
+        viewSize={viewSize} 
+        setViewSize={setViewSize} 
+        sharpsOrFlats={sharpsOrFlats} 
+        setSharpsOrFlats={setSharpsOrFlats} 
+        selectedBaseNote={selectedBaseNote} 
+        setSelectedBaseNote={setSelectedBaseNote} 
+        setCurrentChord={setCurrentChord} 
+      />
 
       <div className="max-w-[100vw] overflow-x-scroll">
         <Fretboard
@@ -180,7 +168,7 @@ function App() {
 
         {/* <Piano /> */}
       </div>
-    </>
+    </main>
   );
 }
 

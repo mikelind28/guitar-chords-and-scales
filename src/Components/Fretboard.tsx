@@ -12,11 +12,16 @@ type FretboardType = {
 
 export default function Fretboard({ viewSize, hoveredNote, setHoveredNote, currentChordNotes, sharpsOrFlats }: FretboardType ) {
     return (
-        <table className={`'ml-2 border border-black' ${viewSize === 1 ? 'text-sm' : viewSize === 2 ? 'text-lg' : viewSize === 3 ? 'text-xl' : 'text-sm'}`}>
+        <table 
+          className={`
+            'ml-2 border border-black' 
+            ${viewSize === 1 ? 'text-sm' : viewSize === 2 ? 'text-lg' : viewSize === 3 ? 'text-xl' : 'text-sm'}
+          `}
+        >
           <thead>
             <tr className='w-fit bg-gray-300'>
               <th 
-                scope='col'
+                scope='row'
                 rowSpan={2}
                 className='py-1 px-2 text-nowrap border border-black bg-gray-400' 
               >

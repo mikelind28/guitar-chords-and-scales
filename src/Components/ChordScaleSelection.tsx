@@ -6,8 +6,8 @@ export default function ChordScaleSelection({
   setCurrentChord: React.Dispatch<React.SetStateAction<ChordOptionsType>>;
 }) {
   return (
-    <div className="flex flex-col gap-1">
-      <label htmlFor="chord-or-scale-select" className="text-xl">
+    <div className="flex flex-col text-lg">
+      <label htmlFor="chord-or-scale-select">
         Chord / Scale:
       </label>
 
@@ -15,7 +15,8 @@ export default function ChordScaleSelection({
         name="chord-or-scale-select"
         id="chord-or-scale-select"
         onChange={(e) => setCurrentChord(e.target.value as ChordOptionsType)}
-        className="border border-gray-600 bg-stone-300 drop-shadow-sm drop-shadow-gray-900/66 text-xl"
+        className="border border-gray-600 bg-stone-300"
+        style={{ filter: 'drop-shadow(1px 2px 2px rgb(0 0 0 / 0.5))' }}
       >
         <optgroup label="Chords">
           <option value="major-chord">Major Chord</option>
